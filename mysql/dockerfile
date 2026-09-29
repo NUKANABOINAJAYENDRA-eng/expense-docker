@@ -3,4 +3,5 @@ ENV MYSQL_ROOT_PASSWORD=ExpenseAPP@1 \
     MYSQL_USER=expense \
     MYSQL_PASSWORD=ExpenseAPP@1 \
     MYSQL_DATABASE=transacations 
-copy scripts/*.sql /docker-entrypoint-initdb.d/
+COPY scripts/*.sql /docker-entrypoint-initdb.d/
+#COPY scripts/init.sql /docker-entrypoint-initdb.d/
