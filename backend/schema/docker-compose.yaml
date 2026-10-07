@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  mysql: # <--- This name must match your hostname in Node.js
+    image: mysql:8.0
+    networks:
+      - my-network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    depends_on:
+      - mysql # Ensures MySQL starts first
+
+networks:
+  my-network:
+    driver: bridge
