@@ -23,18 +23,17 @@ services:
     build: .
     ports:
       - "8080:8080"
-    # Inject variables so process.env can read them 👇
     environment:
       DB_HOST: mysql
       DB_USER: expense
       DB_PWD: ExpenseAPP@1
       DB_DATABASE: expenses_db
     networks:
-      - expense-network
+      - expense-network  
     depends_on:
       mysql:
         condition: service_healthy
 
 networks:
-  expense-network:
+  expense-network:      
     driver: bridge
