@@ -6,14 +6,15 @@ services:
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: ExpenseAPP@1
-      MYSQL_DATABASE: mysql
+      MYSQL_DATABASE: expenses_db
+      MYSQL_USER: expense
+      MYSQL_PASSWORD: ExpenseAPP@1
     ports:
       - "3306:3306"
     networks:
-      - expense
-    # Add this healthcheck block 👇
+      - expense-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pyour_root_password"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pExpenseAPP@1"]
       timeout: 5s
       retries: 5
       interval: 5s
@@ -22,13 +23,18 @@ services:
     build: .
     ports:
       - "8080:8080"
+    # Inject variables so process.env can read them 👇
+    environment:
+      DB_HOST: mysql
+      DB_USER: expense
+      DB_PWD: ExpenseAPP@1
+      DB_DATABASE: expenses_db
     networks:
-      - expense
-    # Update depends_on to check for service stability 👇
+      - expense-network
     depends_on:
       mysql:
         condition: service_healthy
 
 networks:
-  app-network:
+  expense-network:
     driver: bridge
