@@ -1,21 +1,34 @@
 version: '3.8'
+
 services:
-  mysql: # <--- This name must match your hostname in Node.js
+  mysql:
     image: mysql:8.0
-    networks:
-      - my-network
+    container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ExpenseAPP@1
+      MYSQL_DATABASE: mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - expense
+    # Add this healthcheck block 👇
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pyour_root_password"]
+      timeout: 5s
+      retries: 5
+      interval: 5s
 
   app:
     build: .
     ports:
       - "8080:8080"
     networks:
-      - my-network
+      - expense
+    # Update depends_on to check for service stability 👇
     depends_on:
-      - mysql # Ensures MySQL starts first
+      mysql:
+        condition: service_healthy
 
 networks:
-  my-network:
+  app-network:
     driver: bridge
