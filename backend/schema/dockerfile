@@ -1,11 +1,11 @@
 FROM node:20
 EXPOSE 8080
 ENV DB_HOST=mysql
-RUN useradd expense
-RUN mkdir /opt/server
-RUN chown expense:expense -R /opt/server
+RUN useradd -m -d /opt/server expense
 WORKDIR /opt/server
-COPY package.json .
-COPY *.js .
+COPY package.json package-lock.json* ./
 RUN npm install
+COPY *.js ./
+RUN chown -R expense:expense /opt/server
+USER expense
 CMD ["node","index.js"]
