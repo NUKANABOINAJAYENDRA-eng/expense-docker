@@ -13,9 +13,10 @@ services:
     image: joindevops/mysql:v1.0
     container_name: mysql # --name mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=ExpenseApp@1
+      - MYSQL_ROOT_PASSWORD=ExpenseAPP@1
       - MYSQL_USER=expense
-      - MYSQL_PASSWORD=ExpenseApp@1
+      - MYSQL_DATABASE=expenses_db
+      - MYSQL_PASSWORD=ExpenseAPP@1
       - MYSQL_DATABASE=transactions
     volumes:
     - source: mysql
